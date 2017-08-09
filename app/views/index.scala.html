@@ -1,0 +1,12 @@
+@()
+
+@main("Welcome to Play") {
+<form>
+  <button formaction="@routes.LoginController.login()">login</button>
+</form>
+<br />
+<form>
+  <button formaction="@routes.SignUpController.signUp()">signup</button>
+</form>
+
+}

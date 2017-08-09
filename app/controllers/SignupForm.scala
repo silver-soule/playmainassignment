@@ -1,0 +1,43 @@
+package controllers
+
+import play.api.data.Form
+import play.api.data.Forms._
+import play.api.data.validation.Constraints.{max, min}
+import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
+
+/**
+  * Created by Neelaksh on 9/8/17.
+  */
+class SignupForm {
+
+  val signupFormConstraints = Form(mapping(
+    "name" -> default(nonEmptyText, "Neelaksh"),
+    "middleName" -> optional(text),
+    "lastName" -> nonEmptyText,
+    "mobileNumber" -> longNumber,
+    "emailId" -> email,
+    "password" -> nonEmptyText.verifying(validPassword),
+    "verifyPassword" -> nonEmptyText.verifying(validPassword),
+    "gender" -> nonEmptyText,
+    "age" -> number.verifying(min(18), max(75))
+  )(SignUpDetails.apply)(SignUpDetails.unapply)
+    .verifying("Passwords do not match", data =>
+      data.password == data.verifyPassword
+    ))
+
+  def validPassword: Constraint[String] = {
+    val validPassword = """^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$""".r
+    Constraint({
+      password =>
+        val errors =
+          password match {
+            case validPassword() => Nil
+            case _ => Seq(ValidationError("Password must contain at least 1 number  and 1 capital case letter"))
+          }
+        if (errors.isEmpty) Valid else Invalid(errors)
+    })
+  }
+}
+
+case class SignUpDetails(name: String, middleName: Option[String], lastName: String, mobileNumber: Long
+                         , emailId: String, password: String, verifyPassword: String, gender: String, age: Int)
