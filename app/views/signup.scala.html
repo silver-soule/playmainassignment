@@ -1,8 +1,11 @@
-@(userForm: Form[SignUpDetails])(implicit messages:Messages)
+@(userForm: Form[SignUpDetails])(implicit messages:Messages, flash: Flash)
 
 @import helper._
-@if(userForm.hasGlobalErrors) {
+<div style="background: red">
+@flash.get("error").getOrElse("")
+</div>
 
+@if(userForm.hasGlobalErrors) {
 <div style="background: red">
     <ul>
     @for(error <- userForm.globalErrors) {

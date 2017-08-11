@@ -1,5 +1,7 @@
-@(userForm: Form[LoginDetails])(implicit messages:Messages)
-
+@(userForm: Form[LoginDetails])(implicit messages:Messages, flash:Flash)
+<div style="background: red">
+    @flash.get("error").getOrElse("")
+</div>
 @import helper._
 
 

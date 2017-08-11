@@ -21,7 +21,7 @@ class HomeController extends Controller {
     Ok(views.html.index())
   }
 
-  def success() = Action {
+  def success() = Action { implicit request =>
     Ok("success")
   }
 
