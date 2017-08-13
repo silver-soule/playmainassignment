@@ -1,6 +1,7 @@
 @(userForm: Form[SignUpDetails])(implicit messages:Messages, flash: Flash)
-
 @import helper._
+
+@main("signup"){
 <div style="background: red">
 @flash.get("error").getOrElse("")
 </div>
@@ -15,7 +16,7 @@
 </div>
 }
 @helper.form(action = routes.SignUpController.signUpPost()){
-@helper.inputText(userForm("name"),'_showConstraints->false)
+@helper.inputText(userForm("firstName"),'_showConstraints->false)
 @helper.inputText(userForm("middleName"))
 @helper.inputText(userForm("lastName"),'_showConstraints->false)
 @helper.inputText(userForm("mobileNumber"),'_showConstraints->false)
@@ -25,6 +26,7 @@
 @helper.inputText(userForm("age"),'_showConstraints->false)
 @helper.select(userForm("gender"),options = Seq("male"->"male","female"->"female"),'_showConstraints->false)
 
-<button >Submit
+<button value="Potato">Submit
 </button>
+}
 }

@@ -13,13 +13,17 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "2.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0",
    "org.mindrot" % "jbcrypt" % "0.3m",
-  "org.postgresql" % "postgresql" % "42.1.4",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.0" % Test,
+   "org.postgresql" % "postgresql" % "42.1.4",
+   "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % "test",
   "com.typesafe.slick" % "slick-codegen_2.11" % "3.1.0",
   "org.mockito" % "mockito-all" % "1.10.19" % "test",
+  "com.h2database" % "h2" % "1.4.188",
   evolutions
 
 )
+
+javaOptions in Test += "-Dconfig.file=conf/test.conf"
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"

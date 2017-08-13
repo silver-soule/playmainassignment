@@ -1,0 +1,40 @@
+@(assignmentDeleteForm:AssignmentDeleteForm, assignments:List[Assignment])(implicit messages:Messages, flash: Flash,session: play.api.mvc.Session)
+@import helper._
+
+@main("assignments"){
+
+<ul>
+    @if(session("isadmin")=="true"){
+    <li><a href="@routes.UserProfileController.home()">Profile</a></li>
+    <li><a href="#news">Users</a></li>
+    <li><a href="@routes.AssignmentController.displayAssignments()">Assignments</a></li>
+    <li><a href="#about">Add Assignments</a></li>
+    }else{
+    <li><a href="@routes.UserProfileController.home()">Profile</a></li>
+    <li><a href="@routes.AssignmentController.displayAssignments()">assignments</a></li>
+    }
+</ul>
+<table class="table table-bordered">
+    <tr>
+        <th>Assignment number</th>
+        <th>Assignment name</th>
+        <th>Assignment description</th>
+    </tr>
+    <tbody>
+    @helper.form(action = routes.AssignmentController.deleteAssignment()){
+    @for(assignment<- assignments){
+    <tr>
+        <td>@assignment.id</td>
+        <td>@assignment.title</td>
+        <td>@assignment.description</td>
+        @if(session("isadmin") == "true"){
+        <td>
+            <button name="assignmentname" value = "@assignment.title">DELETE</button>
+             </td>
+        }
+    </tr>
+    }
+    }
+    </tbody>
+</table>
+}

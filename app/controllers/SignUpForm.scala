@@ -1,17 +1,22 @@
 package controllers
 
+import play.api.Logger
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.Constraints.{max, min}
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
+
 /**
   * Created by Neelaksh on 9/8/17.
   */
-class SignupForm {
+class SignUpForm {
 
-  val signupFormConstraints = Form(mapping(
-    "name" -> default(nonEmptyText, "Neelaksh"),
+  val minAge = 18
+  val maxAge = 75
+
+  val signUpForm = Form(mapping(
+    "firstName" -> nonEmptyText,
     "middleName" -> optional(text),
     "lastName" -> nonEmptyText,
     "mobileNumber" -> longNumber,
@@ -19,10 +24,12 @@ class SignupForm {
     "password" -> nonEmptyText.verifying(validPassword),
     "verifyPassword" -> nonEmptyText.verifying(validPassword),
     "gender" -> nonEmptyText,
-    "age" -> number.verifying(min(18), max(75))
+    "age" -> number.verifying(min(minAge), max(maxAge))
   )(SignUpDetails.apply)(SignUpDetails.unapply)
-    .verifying("Passwords do not match", data =>
+    .verifying("Passwords do not match", data =>{
       data.password == data.verifyPassword
+    }
+
     ))
 
   def validPassword: Constraint[String] = {
@@ -31,13 +38,17 @@ class SignupForm {
       password =>
         val errors =
           password match {
-            case validPassword() => Nil
-            case _ => Seq(ValidationError("Password must contain at least 1 number  and 1 capital case letter"))
+            case validPassword() =>
+              Logger.info("valid password")
+              Nil
+            case _ =>
+              Logger.error("invalid password")
+              Seq(ValidationError("Password must contain at least 1 number  and 1 capital case letter"))
           }
         if (errors.isEmpty) Valid else Invalid(errors)
     })
   }
 }
 
-case class SignUpDetails(name: String, middleName: Option[String], lastName: String, mobileNumber: Long
+case class SignUpDetails(firstName: String, middleName: Option[String], lastName: String, mobileNumber: Long
                          , emailId: String, password: String, verifyPassword: String, gender: String, age: Int)

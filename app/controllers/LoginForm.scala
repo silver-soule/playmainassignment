@@ -8,7 +8,7 @@ import play.api.data.Forms._
   */
 class LoginForm {
 
-  val loginFormConstraints = Form(mapping(
+  val loginForm = Form(mapping(
     "emailId" -> email,
     "password" -> nonEmptyText
   )(LoginDetails.apply)(LoginDetails.unapply))

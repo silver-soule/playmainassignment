@@ -1,0 +1,51 @@
+@(userForm: Form[UserProfileDetails],hobbies:List[Hobby])(implicit messages:Messages, flash: Flash,session: play.api.mvc.Session)
+@import helper._
+
+@main("profile"){
+
+<div style="background: red">
+    @flash.get("error").getOrElse("")</div>
+
+<ul>
+    @if(session("isadmin")=="true"){
+    <li><a href="@routes.UserProfileController.home()">Profile</a></li>
+    <li><a href="#news">Users</a></li>
+    <li><a href="@routes.AssignmentController.displayAssignments()">Assignments</a></li>
+    <li><a href="#about">Add Assignments</a></li>
+    }else{
+    <li><a href="@routes.UserProfileController.home()">Profile</a></li>
+    <li><a href="@routes.AssignmentController.displayAssignments()">assignments</a></li>
+    }
+</ul>
+
+@if(userForm.hasGlobalErrors) {
+<div style="background: red">
+    <ul>
+        @for(error <- userForm.globalErrors) {
+        <li>@Messages(error.messages,error.args)</li>
+        }
+    </ul>
+</div>
+
+
+
+
+}
+@helper.form(action = routes.UserProfileController.userInfoUpdatePost()){
+@helper.inputText(userForm("firstName"),'_showConstraints->false)
+@helper.inputText(userForm("middleName"))
+@helper.inputText(userForm("lastName"),'_showConstraints->false)
+@helper.inputText(userForm("mobileNumber"),'_showConstraints->false)
+@helper.inputText(userForm("age"),'_showConstraints->false)
+@helper.select(userForm("gender"),options = Seq("male"->"male","female"->"female"),'_showConstraints->false)
+@inputCheckboxGroup(userForm("hobbies"),options = hobbies.map(hobby=>hobby.id.toString->hobby.name),'_label -> "Hobbies",
+'_error -> userForm("hobbies").error.map(_.withMessage("select one or more hobbies")))
+<button >Submit
+</button>
+}
+
+<form>
+    <button formaction="@routes.HomeController.logout()">logout</button>
+</form>
+
+}

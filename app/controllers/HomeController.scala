@@ -7,7 +7,6 @@ import play.api.mvc._
   * This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
   */
-@Singleton
 class HomeController extends Controller {
 
   /**
@@ -17,12 +16,16 @@ class HomeController extends Controller {
     * will be called when the application receives a `GET` request with
     * a path of `/`.
     */
-  def index() = Action { implicit request: Request[AnyContent] =>
+  def index() : Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
 
-  def success() = Action { implicit request =>
+  def success() : Action[AnyContent] = Action { implicit request =>
     Ok("success")
+  }
+
+  def logout() : Action[AnyContent] = Action {implicit request =>
+    Redirect(routes.HomeController.index()).withNewSession
   }
 
 }

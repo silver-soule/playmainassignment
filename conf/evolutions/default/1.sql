@@ -1,4 +1,5 @@
 
+# --- !Ups
 
 CREATE TABLE IF NOT EXISTS userinfo(
     id              serial NOT NULL ,
@@ -33,4 +34,8 @@ CREATE TABLE IF NOT EXISTS assignment(
 );
 
 
-
+# --- !Downs
+DROP TABLE hobbytouser;
+DROP table userinfo;
+DROP TABLE hobby;
+DROP TABLE assignment;
