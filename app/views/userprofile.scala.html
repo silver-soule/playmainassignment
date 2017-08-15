@@ -51,12 +51,12 @@
 @helper.select(userForm("gender"),options = Seq("male"->"male","female"->"female"),'_showConstraints->false)
 @inputCheckboxGroup(userForm("hobbies"),options = hobbies.map(hobby=>hobby.id.toString->hobby.name),'_label -> "Hobbies",
 '_error -> userForm("hobbies").error.map(_.withMessage("select one or more hobbies")))
-<button >Update Profile
+<button class="btn btn-default" >Update Profile
 </button>
 }
 
 <form>
-    <button formaction="@routes.HomeController.logout()">logout</button>
+    <button class="btn btn-default" formaction="@routes.HomeController.logout()">logout</button>
 </form>
 
 }

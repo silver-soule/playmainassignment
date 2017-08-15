@@ -4,17 +4,22 @@
 <div style="background: red">
     @flash.get("error").getOrElse(flash.get("success").getOrElse(""))
 </div>
+<div class="form-group ">
 @helper.form(action = routes.LoginController.loginPost()){
 @helper.inputText(userForm("emailId"),'_showConstraints->false)
 @helper.inputPassword(userForm("password"),'_showConstraints->false)
-<button name="submit" value = "submit">login
+<button class="btn btn-default"  name="submit" value = "submit">login
 </button>
 }
+<br/>
+<br/>
 <form>
-    <button formaction="@routes.SignUpController.signUp()">signup</button>
+    <button class="btn btn-default" formaction="@routes.SignUpController.signUp()">signup</button>
 </form>
-
+<br/>
+<br/>
 <form>
-    <button formaction="@routes.LoginController.updatePassword()">Forgot Password</button>
+    <button class="btn btn-default" formaction="@routes.LoginController.updatePassword()">Forgot Password</button>
 </form>
 }
+</div>

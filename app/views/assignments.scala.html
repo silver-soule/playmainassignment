@@ -29,6 +29,10 @@
     <tr>
         <th>Assignment name</th>
         <th>Assignment description</th>
+        @if(session.get("isadmin").getOrElse("false") == "true"){
+
+                <th>Delete Assignments</th>
+        }
     </tr>
     <tbody>
     @for(assignment<- assignments){
@@ -39,7 +43,7 @@
         @if(session.get("isadmin").getOrElse("false") == "true"){
         <td>
             <form>
-            <button name="assignmentname" value = "@assignment.title" >DELETE</button>
+            <button class="btn-danger" name="assignmentname" value = "@assignment.title" >DELETE</button>
             </form></td>
         }
         }

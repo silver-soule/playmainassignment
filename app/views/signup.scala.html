@@ -22,11 +22,11 @@
 @helper.inputText(userForm("mobileNumber"),'_showConstraints->false)
 @helper.inputText(userForm("emailId"),'_showConstraints->false)
 @helper.inputPassword(userForm("password"),'_showConstraints->false)
-@helper.inputPassword(userForm("verifyPassword"),'_label->"re-enter password",'_showConstraints->false)
+@helper.inputPassword(userForm("verifyPassword"),'_label->"confirm password",'_showConstraints->false)
 @helper.inputText(userForm("age"),'_showConstraints->false)
 @helper.select(userForm("gender"),options = Seq("male"->"male","female"->"female"),'_showConstraints->false)
 
-<button value="Potato">Sign up
+<button class="btn btn-default" value="Potato">Sign up
 </button>
 }
 }
