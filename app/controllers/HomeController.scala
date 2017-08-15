@@ -1,7 +1,9 @@
 package controllers
 
 import javax.inject._
+
 import play.api.mvc._
+import views.html.helper
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -17,7 +19,7 @@ class HomeController extends Controller {
     * a path of `/`.
     */
   def index() : Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+    Redirect(routes.LoginController.login())
   }
 
   def success() : Action[AnyContent] = Action { implicit request =>
@@ -25,7 +27,7 @@ class HomeController extends Controller {
   }
 
   def logout() : Action[AnyContent] = Action {implicit request =>
-    Redirect(routes.HomeController.index()).withNewSession
+    Redirect(routes.LoginController.login()).withNewSession
   }
 
 }

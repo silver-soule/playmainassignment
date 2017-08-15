@@ -23,12 +23,8 @@ class AssignmentRepository @Inject()(protected val dbConfigProvider: DatabaseCon
     db.run(assignmentQuery.to[List].result)
   }
 
-  def deleteAssignment(assignment:Assignment) : Future[Boolean] = {
-    db.run(assignmentQuery.filter(_.id === assignment.id).delete) map ( _ > 0)
-  }
-
-  def deleteAssignment(assignmentName:String) : Future[Boolean] = {
-    db.run(assignmentQuery.filter(_.title === assignmentName).delete) map ( _ > 0)
+  def deleteAssignment(assignmentId:Int) : Future[Boolean] = {
+    db.run(assignmentQuery.filter(_.id === assignmentId).delete) map ( _ > 0)
   }
 }
 
@@ -47,10 +43,10 @@ trait AssignmentRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def description: Rep[String] = column[String]("description")
 
-    def * = (id, title, description) <> (Assignment.tupled, Assignment.unapply)
+    def * = (title, description,id) <> (Assignment.tupled, Assignment.unapply)
 
   }
 
 }
 
-case class Assignment(id: Int, title: String, description: String)
+case class Assignment( title: String, description: String,id: Int = 0)

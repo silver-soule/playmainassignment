@@ -34,6 +34,18 @@ CREATE TABLE IF NOT EXISTS assignment(
 );
 
 
+INSERT INTO userinfo(firstname,middlename,lastname,mobilenumber,emailid,password,gender,age,isenabled,isadmin)
+VALUES('Neelaksh','abcde','Chauhan',9450123,'nilaxch12@gmail.com','Pascal123','male',21,true,true);
+
+INSERT INTO userinfo(firstname,middlename,lastname,mobilenumber,emailid,password,gender,age,isenabled,isadmin)
+VALUES('Neelaksh','','Chauhan',9450123,'nilaxch123@gmail.com','Pasta123','male',21,true,false);
+
+
+INSERT INTO assignment(title,description) VALUES ('scala101','basics of scala');
+INSERT INTO assignment(title,description) VALUES ('scala201','advanced scala');
+
+INSERT INTO hobby(hobbyname) VALUES ('dancing');
+INSERT INTO hobby(hobbyname) VALUES ('lancing');
 # --- !Downs
 DROP TABLE hobbytouser;
 DROP table userinfo;

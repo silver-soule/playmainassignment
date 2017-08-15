@@ -32,5 +32,16 @@ CREATE TABLE IF NOT EXISTS assignment(
     description      text
 );
 
+INSERT INTO hobby(hobbyname) VALUES ('dancing');
+INSERT INTO hobby(hobbyname) VALUES ('lancing');
 
+UPDATE userinfo set isenabled = true where emailid = 'nilaxch@gmail.com';
 
+INSERT INTO assignment(title,description) VALUES ('scala101','basics of scala');
+INSERT INTO assignment(title,description) VALUES ('scala201','advanced scala');
+
+INSERT INTO userinfo(firstname,middlename,lastname,mobilenumber,emailid,password,gender,age,isenabled,isadmin)
+VALUES('Neelaksh','abcde','Chauhan',9450123,'nilaxch12@gmail.com','Pascal123','male',21,true,false);
+
+INSERT INTO userinfo(firstname,middlename,lastname,mobilenumber,emailid,password,gender,age,isenabled,isadmin)
+VALUES('Neelaksh','','Chauhan',9450123,'nilaxch123@gmail.com','Pasta123','male',21,true,false);

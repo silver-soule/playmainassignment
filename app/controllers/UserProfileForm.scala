@@ -20,8 +20,6 @@ class UserProfileForm {
     "age" -> number.verifying(min(minAge), max(maxAge)),
     "hobbies" -> list(number)
   )(UserProfileDetails.apply)(UserProfileDetails.unapply))
-
-
 }
 
 case class UserProfileDetails(firstName: String, middleName: Option[String],

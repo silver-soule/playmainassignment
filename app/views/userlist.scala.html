@@ -1,0 +1,40 @@
+@(users:List[MinUser])(implicit messages:Messages,session: play.api.mvc.Session)
+@import helper._
+
+@main("assignments"){
+
+<ul>
+    <li><a href="@routes.CommonPagesController.home()">Profile</a></li>
+    <li><a href="@routes.AdminPagesController.displayUsers()">Users</a></li>
+    <li><a href="@routes.CommonPagesController.displayAssignments()">Assignments</a></li>
+    <li><a href="@routes.AdminPagesController.addAssignment()">Add Assignments</a></li>
+
+</ul>
+<table class="table table-bordered">
+    <tr>
+        <th>User name</th>
+        <th>User email </th>
+        <th>Permissions </th>
+    </tr>
+    <tbody>
+    @for(user<- users){
+    @helper.form(action = routes.AdminPagesController.flipPermissions(user.emailId,user.isEnabled)){
+    <tr>
+        <td>@user.firstName</td>
+        <td>@user.emailId</td>
+        @if(session("isadmin") == "true"){
+        <td>
+            <form>
+                @if(user.isEnabled == true){
+                <button name="userdisable"  class="btn-danger">DISABLE</button>
+                } else {
+                <button name="userenable"  class = "btn-success" >ENABLE</button>
+                }
+            </form></td>
+        }
+        }
+    </tr>
+    }
+    </tbody>
+</table>
+}

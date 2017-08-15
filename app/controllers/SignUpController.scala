@@ -7,6 +7,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 
 import scala.concurrent.Future
 import play.api.Logger
+import util.Hasher
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -14,7 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
   * Created by Neelaksh on 9/8/17.
   */
 class SignUpController @Inject()(val messagesApi: MessagesApi, userRepository: UserRepository,
-                                 signUpForm: SignUpForm) extends Controller with I18nSupport {
+                                 signUpForm: SignUpForm,hasher:Hasher) extends Controller with I18nSupport {
 
   implicit val x = messagesApi
 
@@ -26,19 +27,19 @@ class SignUpController @Inject()(val messagesApi: MessagesApi, userRepository: U
       },
       userData => {
         Logger.info(s"data is $userData")
-        val checkId = userRepository.getEmailId(userData.emailId)
+        val checkId = userRepository.checkIfExists(userData.emailId)
         Logger.info(checkId.toString)
         checkId.flatMap {
-          case Some(userData.emailId) =>
+          case true =>
             Logger.error(s" error => user already exists")
             Future.successful(Redirect(routes.SignUpController.signUp())
               .flashing("error" -> "emailId is already in use!"))
-          case None =>
+          case false =>
             val addedUser = userRepository.store(User(userData.firstName, userData.middleName,
               userData.lastName, userData.mobileNumber, userData.emailId,
-              userData.password, userData.gender, userData.age))
+              hasher.hashpw(userData.password), userData.gender, userData.age))
             addedUser.map {
-              case true => Redirect(routes.UserProfileController.home())
+              case true => Redirect(routes.CommonPagesController.home()).flashing("success"->"New account created")
                 .withSession("emailid" -> userData.emailId, "name" -> userData.firstName,"isadmin"->false.toString)
               case false => InternalServerError("500")
             }

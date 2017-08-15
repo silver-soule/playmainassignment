@@ -1,0 +1,18 @@
+@(addAssignmentForm: Form[AssignmentDetails])(implicit messages:Messages)
+@import helper._
+
+@main("profile"){
+<ul>
+    <li><a href="@routes.CommonPagesController.home()">Profile</a></li>
+    <li><a href="@routes.AdminPagesController.displayUsers()">Users</a></li>
+    <li><a href="@routes.CommonPagesController.displayAssignments()">Assignments</a></li>
+    <li><a href="@routes.AdminPagesController.addAssignment()">Add Assignments</a></li>
+
+</ul>
+@helper.form(action = routes.AdminPagesController.addAssignmentPost()){
+@helper.inputText(addAssignmentForm("title"),'_showConstraints->false)
+@helper.inputText(addAssignmentForm("description"),'_showConstraints->false)
+<button name="submit" value = "submit">Add assignment
+</button>
+}
+}

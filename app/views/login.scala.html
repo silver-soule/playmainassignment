@@ -1,11 +1,20 @@
 @(userForm: Form[LoginDetails])(implicit messages:Messages, flash:Flash)
-<div style="background: red">
-    @flash.get("error").getOrElse("")
-</div>
 @import helper._
+@main("login") {
+<div style="background: red">
+    @flash.get("error").getOrElse(flash.get("success").getOrElse(""))
+</div>
 @helper.form(action = routes.LoginController.loginPost()){
 @helper.inputText(userForm("emailId"),'_showConstraints->false)
 @helper.inputPassword(userForm("password"),'_showConstraints->false)
-<button >Submit
+<button name="submit" value = "submit">login
 </button>
+}
+<form>
+    <button formaction="@routes.SignUpController.signUp()">signup</button>
+</form>
+
+<form>
+    <button formaction="@routes.LoginController.updatePassword()">Forgot Password</button>
+</form>
 }

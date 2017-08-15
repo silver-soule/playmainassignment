@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" % "slick-codegen_2.11" % "3.1.0",
   "org.mockito" % "mockito-all" % "1.10.19" % "test",
   "com.h2database" % "h2" % "1.4.188",
+  specs2 % Test,
   evolutions
 
 )
