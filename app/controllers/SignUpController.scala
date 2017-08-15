@@ -1,21 +1,20 @@
 package controllers
 
-import play.api.mvc._
 import com.google.inject.Inject
 import models.{User, UserRepository}
-import play.api.i18n.{I18nSupport, MessagesApi}
-
-import scala.concurrent.Future
 import play.api.Logger
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc._
 import util.Hasher
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * Created by Neelaksh on 9/8/17.
   */
 class SignUpController @Inject()(val messagesApi: MessagesApi, userRepository: UserRepository,
-                                 signUpForm: SignUpForm,hasher:Hasher) extends Controller with I18nSupport {
+                                 signUpForm: SignUpForm, hasher: Hasher) extends Controller with I18nSupport {
 
   implicit val x = messagesApi
 
@@ -39,8 +38,8 @@ class SignUpController @Inject()(val messagesApi: MessagesApi, userRepository: U
               userData.lastName, userData.mobileNumber, userData.emailId,
               hasher.hashpw(userData.password), userData.gender, userData.age))
             addedUser.map {
-              case true => Redirect(routes.CommonPagesController.home()).flashing("success"->"New account created")
-                .withSession("emailid" -> userData.emailId, "name" -> userData.firstName,"isadmin"->false.toString)
+              case true => Redirect(routes.CommonPagesController.home()).flashing("success" -> "New account created")
+                .withSession("emailid" -> userData.emailId, "name" -> userData.firstName, "isadmin" -> false.toString)
               case false => InternalServerError("500")
             }
         }

@@ -1,8 +1,6 @@
 package models
 
 import com.google.inject.{Inject, Singleton}
-import org.mindrot.jbcrypt.BCrypt
-import play.api.Logger
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 
@@ -22,35 +20,37 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
     db.run(userQuery += user) map (_ > 0)
   }
 
-  def getAllNormalUsers() : Future[List[User]] = {
+  def getAllNormalUsers(): Future[List[User]] = {
     db.run(userQuery.filter(_.isAdmin === false).to[List].sortBy(_.firstName).result)
   }
 
   def checkIfExists(email: String): Future[Boolean] = {
-    db.run(userQuery.filter(user => user.emailId === email).to[List].result).map{
-      user=> user.headOption.fold(false)(_=>true)
+    db.run(userQuery.filter(user => user.emailId === email).to[List].result).map {
+      user => user.headOption.fold(false)(_ => true)
     }
   }
 
   def getUserData(email: String): Future[Option[User]] = {
     db.run(userQuery.filter(user => user.emailId === email)
       .result.headOption.map {
-      useropt=>useropt
+      useropt => useropt
     })
   }
 
-  def updateUserData(user:UserWithoutPassword) : Future[Boolean] = {
-    db.run(userQuery.filter(_.emailId === user.emailId).map(user=> (user.firstName,user.middleName,user.lastName,user.mobileNumber,
-      user.gender,user.age)).update(user.firstName,user.middleName,user.lastName,user.mobileNumber
-      ,user.gender,user.age)) map(_ > 0)
+  def updateUserData(user: UserWithoutPassword): Future[Boolean] = {
+    db.run(userQuery.filter(_.emailId === user.emailId).map(user => (user.firstName, user.middleName, user.lastName, user.mobileNumber,
+      user.gender, user.age)).update(user.firstName, user.middleName, user.lastName, user.mobileNumber
+      , user.gender, user.age)) map (_ > 0)
   }
 
-  def setPermissions(emailId:String, status:Boolean) :Future[Boolean] = {
-    db.run(userQuery.filter(_.emailId === emailId.trim).map{_.isEnabled}.update(status)) map(_ > 0)
+  def setPermissions(emailId: String, status: Boolean): Future[Boolean] = {
+    db.run(userQuery.filter(_.emailId === emailId.trim).map {
+      _.isEnabled
+    }.update(status)) map (_ > 0)
   }
 
-  def updatePassword(emailId:String,password: String) :Future[Boolean] = {
-    db.run(userQuery.filter(_.emailId === emailId).map(_.password).update(password)) map(_ > 0)
+  def updatePassword(emailId: String, password: String): Future[Boolean] = {
+    db.run(userQuery.filter(_.emailId === emailId).map(_.password).update(password)) map (_ > 0)
   }
 }
 
@@ -80,19 +80,20 @@ trait UserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def age: Rep[Int] = column[Int]("age")
 
-    def isEnabled : Rep[Boolean] = column[Boolean]("isenabled")
+    def isEnabled: Rep[Boolean] = column[Boolean]("isenabled")
 
-    def isAdmin : Rep[Boolean] = column[Boolean]("isadmin")
+    def isAdmin: Rep[Boolean] = column[Boolean]("isadmin")
 
-    def * = (firstName, middleName, lastName, mobileNumber, emailId, password, gender, age, id,isEnabled,isAdmin) <> (User.tupled, User.unapply)
+    def * = (firstName, middleName, lastName, mobileNumber, emailId, password, gender, age, id, isEnabled, isAdmin) <> (User.tupled, User.unapply)
 
   }
 
 }
 
 case class User(firstName: String, middleName: Option[String], lastName: String, mobileNumber: Long
-                , emailId: String, password: String, gender: String, age: Int, id: Int = 0,isEnabled : Boolean = true, isAdmin: Boolean = false)
+                , emailId: String, password: String, gender: String, age: Int, id: Int = 0, isEnabled: Boolean = true, isAdmin: Boolean = false)
 
 case class UserWithoutPassword(firstName: String, middleName: Option[String], lastName: String, mobileNumber: Long
                                , emailId: String, gender: String, age: Int)
-case class MinUser(firstName:String,emailId:String,isEnabled:Boolean)
+
+case class MinUser(firstName: String, emailId: String, isEnabled: Boolean)

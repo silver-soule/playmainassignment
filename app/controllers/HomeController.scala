@@ -1,9 +1,6 @@
 package controllers
 
-import javax.inject._
-
 import play.api.mvc._
-import views.html.helper
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -18,15 +15,12 @@ class HomeController extends Controller {
     * will be called when the application receives a `GET` request with
     * a path of `/`.
     */
-  def index() : Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Redirect(routes.LoginController.login())
   }
 
-  def success() : Action[AnyContent] = Action { implicit request =>
-    Ok("success")
-  }
 
-  def logout() : Action[AnyContent] = Action {implicit request =>
+  def logout(): Action[AnyContent] = Action { implicit request =>
     Redirect(routes.LoginController.login()).withNewSession
   }
 

@@ -1,13 +1,11 @@
 package models
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
-
-import scala.concurrent.Future
-import play.api.Logger
 import slick.lifted.PrimaryKey
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * Created by Neelaksh on 12/8/17.

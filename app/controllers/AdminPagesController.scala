@@ -6,18 +6,17 @@ import models.{Assignment, AssignmentRepository, MinUser, UserRepository}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Controller, Request}
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 /**
   * Created by Neelaksh on 15/8/17.
   */
-class AdminPagesController@Inject()(val messagesApi: MessagesApi, userRepository: UserRepository
-                                   ,addAssignmentForm: AddAssignmentForm,assignmentRepository: AssignmentRepository) extends Controller with I18nSupport {
+class AdminPagesController @Inject()(val messagesApi: MessagesApi, userRepository: UserRepository
+                                     , addAssignmentForm: AddAssignmentForm, assignmentRepository: AssignmentRepository) extends Controller with I18nSupport {
 
 
-  implicit val x = messagesApi
+  implicit val messages = messagesApi
 
   def displayUsers(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
@@ -60,7 +59,7 @@ class AdminPagesController@Inject()(val messagesApi: MessagesApi, userRepository
       _ =>
         Logger.info("checking if admin")
         request.session("isadmin") match {
-          case "false" =>Redirect(routes.CommonPagesController.home())
+          case "false" => Redirect(routes.CommonPagesController.home())
           case "true" => Ok(views.html.addassignment(addAssignmentForm.addAssignmentForm))
         }
     }

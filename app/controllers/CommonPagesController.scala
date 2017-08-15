@@ -4,10 +4,10 @@ import com.google.inject.Inject
 import models._
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Security.{AuthenticatedBuilder, AuthenticatedRequest}
 import play.api.mvc._
-import scala.concurrent.Future
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
 /**
@@ -47,7 +47,7 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
                 }
             }
           case None =>
-            Future.successful(Redirect(routes.HomeController.index()))
+            Future.successful(Redirect(routes.SignUpController.signUp()))
         }
     }
   }
@@ -88,7 +88,7 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
                     }
                 }
               case false =>
-                Future.successful(Redirect(routes.HomeController.index()))
+                Future.successful(InternalServerError("500"))
             }
           })
     }

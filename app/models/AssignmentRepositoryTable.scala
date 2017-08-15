@@ -3,6 +3,7 @@ package models
 import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -23,8 +24,8 @@ class AssignmentRepository @Inject()(protected val dbConfigProvider: DatabaseCon
     db.run(assignmentQuery.to[List].result)
   }
 
-  def deleteAssignment(assignmentId:Int) : Future[Boolean] = {
-    db.run(assignmentQuery.filter(_.id === assignmentId).delete) map ( _ > 0)
+  def deleteAssignment(assignmentId: Int): Future[Boolean] = {
+    db.run(assignmentQuery.filter(_.id === assignmentId).delete) map (_ > 0)
   }
 }
 
@@ -43,10 +44,10 @@ trait AssignmentRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def description: Rep[String] = column[String]("description")
 
-    def * = (title, description,id) <> (Assignment.tupled, Assignment.unapply)
+    def * = (title, description, id) <> (Assignment.tupled, Assignment.unapply)
 
   }
 
 }
 
-case class Assignment( title: String, description: String,id: Int = 0)
+case class Assignment(title: String, description: String, id: Int = 0)

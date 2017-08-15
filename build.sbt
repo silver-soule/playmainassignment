@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
 )
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
-
+coverageExcludedPackages := "<empty>;Reverse.*;Routes.*;"
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"

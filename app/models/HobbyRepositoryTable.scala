@@ -3,7 +3,6 @@ package models
 import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
-import slick.lifted.ProvenShape
 
 import scala.concurrent.Future
 
@@ -16,11 +15,12 @@ class HobbyRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
   import driver.api._
 
-  def getAllHobbies() :Future[List[Hobby]] = {
+  def getAllHobbies(): Future[List[Hobby]] = {
     db.run(hobbyQuery.to[List].result)
   }
 
 }
+
 trait HobbyRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   import driver.api._
@@ -31,7 +31,7 @@ trait HobbyRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def id: Rep[Int] = column[Int]("id")
 
-    def name: Rep[String] = column[String]("hobbyname",O.PrimaryKey)
+    def name: Rep[String] = column[String]("hobbyname", O.PrimaryKey)
 
     def * = (id, name) <> (Hobby.tupled, Hobby.unapply)
 

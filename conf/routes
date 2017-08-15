@@ -28,9 +28,9 @@ GET     /users                              controllers.AdminPagesController.dis
 
 POST    /users/:emailId/:isEnabled          controllers.AdminPagesController.flipPermissions(emailId:String,isEnabled:Boolean)
 
-GET     /addassignments                     controllers.AdminPagesController.addAssignment()
+GET     /addassignment                      controllers.AdminPagesController.addAssignment()
 
-POST    /addassignments                     controllers.AdminPagesController.addAssignmentPost()
+POST    /addassignment                      controllers.AdminPagesController.addAssignmentPost()
 
 GET     /updatepassword                     controllers.LoginController.updatePassword()
 

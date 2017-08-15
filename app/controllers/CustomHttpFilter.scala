@@ -6,7 +6,7 @@ package controllers
 
 import akka.stream.Materializer
 import com.google.inject.Inject
-import play.api.http.{DefaultHttpFilters, HttpFilters}
+import play.api.http.DefaultHttpFilters
 import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -16,7 +16,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * Created by bharat on 1/24/16.
   */
 
-class DisableBrowserCache @Inject() (implicit val mat: Materializer, ec: ExecutionContext) extends Filter {
+class DisableBrowserCache @Inject()(implicit val mat: Materializer, ec: ExecutionContext) extends Filter {
 
   def apply(nextFilter: RequestHeader => Future[Result])
            (requestHeader: RequestHeader): Future[Result] = {
@@ -30,4 +30,4 @@ class DisableBrowserCache @Inject() (implicit val mat: Materializer, ec: Executi
   }
 }
 
-class CustomHttpFilter@Inject () (disableCache:DisableBrowserCache) extends DefaultHttpFilters(disableCache)
+class CustomHttpFilter @Inject()(disableCache: DisableBrowserCache) extends DefaultHttpFilters(disableCache)

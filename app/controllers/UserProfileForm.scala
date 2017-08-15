@@ -24,5 +24,5 @@ class UserProfileForm {
 
 case class UserProfileDetails(firstName: String, middleName: Option[String],
                               lastName: String, mobileNumber: Long
-                              , gender: String, age: Int, hobbies:List[Int])
+                              , gender: String, age: Int, hobbies: List[Int])
 
