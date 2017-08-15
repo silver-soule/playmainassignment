@@ -2,13 +2,16 @@
 @import helper._
 
 @main("profile"){
-<ul>
-    <li><a href="@routes.CommonPagesController.home()">Profile</a></li>
-    <li><a href="@routes.AdminPagesController.displayUsers()">Users</a></li>
-    <li><a href="@routes.CommonPagesController.displayAssignments()">Assignments</a></li>
-    <li><a href="@routes.AdminPagesController.addAssignment()">Add Assignments</a></li>
-
-</ul>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="@routes.CommonPagesController.home()">Profile</a></li>
+            <li><a href="@routes.AdminPagesController.displayUsers()">Users</a></li>
+            <li><a href="@routes.CommonPagesController.displayAssignments()">Assignments</a></li>
+            <li><a href="@routes.AdminPagesController.addAssignment()">Add Assignments</a></li>
+        </ul>
+    </div>
+</nav>
 @helper.form(action = routes.AdminPagesController.addAssignmentPost()){
 @helper.inputText(addAssignmentForm("title"),'_showConstraints->false)
 @helper.inputText(addAssignmentForm("description"),'_showConstraints->false)
