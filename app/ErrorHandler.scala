@@ -1,13 +1,11 @@
 /**
   * Created by Neelaksh on 16/8/17.
   */
-import javax.inject.Singleton
 import play.api.http.HttpErrorHandler
 import play.api.mvc.Results._
 import play.api.mvc.{RequestHeader, Result}
 import scala.concurrent.Future
 
-@Singleton
 class ErrorHandler extends HttpErrorHandler {
 
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
