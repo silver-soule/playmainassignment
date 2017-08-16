@@ -20,7 +20,7 @@ class AssignmentRepository @Inject()(protected val dbConfigProvider: DatabaseCon
   def addAssignment(assignment: Assignment): Future[Boolean] = {
     db.run(assignmentQuery += assignment) map (_ > 0)
   }
-  
+
   def getAllAssignments(): Future[List[Assignment]] = {
     db.run(assignmentQuery.to[List].result)
   }

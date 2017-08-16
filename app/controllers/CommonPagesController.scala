@@ -126,6 +126,4 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
         }
     }
   }
-
-
 }
