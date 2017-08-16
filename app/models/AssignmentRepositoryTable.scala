@@ -3,6 +3,7 @@ package models
 import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
+import slick.lifted.ProvenShape
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -19,7 +20,7 @@ class AssignmentRepository @Inject()(protected val dbConfigProvider: DatabaseCon
   def addAssignment(assignment: Assignment): Future[Boolean] = {
     db.run(assignmentQuery += assignment) map (_ > 0)
   }
-
+  
   def getAllAssignments(): Future[List[Assignment]] = {
     db.run(assignmentQuery.to[List].result)
   }
@@ -44,7 +45,7 @@ trait AssignmentRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def description: Rep[String] = column[String]("description")
 
-    def * = (title, description, id) <> (Assignment.tupled, Assignment.unapply)
+    def * :ProvenShape[Assignment] = (title, description, id) <> (Assignment.tupled, Assignment.unapply)
 
   }
 

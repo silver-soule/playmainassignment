@@ -3,6 +3,7 @@ package models
 import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
+import slick.lifted.ProvenShape
 
 import scala.concurrent.Future
 
@@ -33,7 +34,7 @@ trait HobbyRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def name: Rep[String] = column[String]("hobbyname", O.PrimaryKey)
 
-    def * = (id, name) <> (Hobby.tupled, Hobby.unapply)
+    def * : ProvenShape[Hobby] = (id, name) <> (Hobby.tupled, Hobby.unapply)
 
   }
 

@@ -3,6 +3,7 @@ package models
 import com.google.inject.{Inject, Singleton}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
+import slick.lifted.ProvenShape
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -84,7 +85,8 @@ trait UserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def isAdmin: Rep[Boolean] = column[Boolean]("isadmin")
 
-    def * = (firstName, middleName, lastName, mobileNumber, emailId, password, gender, age, id, isEnabled, isAdmin) <> (User.tupled, User.unapply)
+    def * : ProvenShape[User] = (firstName, middleName, lastName, mobileNumber, emailId, password, gender,
+                                age, id, isEnabled, isAdmin) <> (User.tupled, User.unapply)
 
   }
 

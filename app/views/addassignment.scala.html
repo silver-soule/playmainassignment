@@ -13,8 +13,8 @@
     </div>
 </nav>
 @helper.form(action = routes.AdminPagesController.addAssignmentPost()){
-@helper.inputText(addAssignmentForm("Title"),'_showConstraints->false)
-@helper.inputText(addAssignmentForm("Description"),'_showConstraints->false)
+@helper.inputText(addAssignmentForm("title"),'_label->"Title",'_showConstraints->false)
+@helper.inputText(addAssignmentForm("description"),'_label->"Description",'_showConstraints->false)
 <button class="btn btn-default"  name="submit" value = "submit">Add assignment
 </button>
 }

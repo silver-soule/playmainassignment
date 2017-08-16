@@ -3,7 +3,8 @@ package models
 import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
-import slick.lifted.PrimaryKey
+import slick.lifted.{PrimaryKey, ProvenShape}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -47,7 +48,7 @@ trait HobbyToUserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] 
 
     def emailId: Rep[String] = column[String]("useremailid")
 
-    def * = (hobbyId, emailId) <> (HobbyToEmail.tupled, HobbyToEmail.unapply)
+    def * :ProvenShape[HobbyToEmail] = (hobbyId, emailId) <> (HobbyToEmail.tupled, HobbyToEmail.unapply)
 
     def pk: PrimaryKey = primaryKey("pk_a", (hobbyId, emailId))
 

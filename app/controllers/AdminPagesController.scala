@@ -77,6 +77,7 @@ class AdminPagesController @Inject()(val messagesApi: MessagesApi, userRepositor
                 Future.successful(BadRequest(views.html.addassignment(formWithErrors)))
               },
               assignmentData => {
+                Logger.info(s"added assignment")
                 val addAssignment = assignmentRepository.addAssignment(Assignment(assignmentData.title, assignmentData.description))
                 addAssignment.map {
                   case false => InternalServerError("500")
