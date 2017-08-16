@@ -14,7 +14,7 @@
 </nav>
 @helper.form(action = routes.AdminPagesController.addAssignmentPost()){
 @helper.inputText(addAssignmentForm("title"),'_label->"Title",'_showConstraints->false)
-@helper.inputText(addAssignmentForm("description"),'_label->"Description",'_showConstraints->false)
+@textarea(field = addAssignmentForm("description"),args = 'rows -> 7, 'cols -> 50 ,'_showConstraints->false,'_label->"Description")
 <button class="btn btn-default"  name="submit" value = "submit">Add assignment
 </button>
 }
