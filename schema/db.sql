@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS hobbytouser(
     );
 
 CREATE TABLE IF NOT EXISTS assignment(
-    id               serial NOT NULL,
-    title            VARCHAR(254)  PRIMARY KEY,
+    id               serial NOT NULL PRIMARY KEY,
+    title            VARCHAR(254) ,
     description      text
 );
 
