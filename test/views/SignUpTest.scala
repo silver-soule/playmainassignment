@@ -23,5 +23,4 @@ class SignUpTest extends PlaySpec with MockitoSugar {
       assert(html.toString.contains("signup"))
     }
   }
-
 }

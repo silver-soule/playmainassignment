@@ -30,5 +30,4 @@ class AssignmentsTest extends PlaySpec with MockitoSugar {
       assert(html.toString().contains("Assignment name"))
     }
   }
-
 }
