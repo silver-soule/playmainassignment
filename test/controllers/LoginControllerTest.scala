@@ -25,12 +25,12 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPer
 
   implicit lazy val materializer: Materializer = app.materializer
   val config: Configuration = Configuration(ConfigFactory.load("application.conf"))
-  val defaultMessages: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
+  val messagesApi: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
   private val mockloginForm = mock[LoginForm]
   private val mockUserRepository = mock[UserRepository]
   private val mockHasher = mock[Hasher]
   private val mockUpdatePasswordForm = mock[UpdatePasswordForm]
-  val controller = new LoginController(mockUserRepository, mockloginForm, mockHasher, mockUpdatePasswordForm, defaultMessages)
+  val controller = new LoginController(mockUserRepository, mockloginForm, mockHasher, mockUpdatePasswordForm, messagesApi)
   val user = User("Neelaksh", None, "Chauhan", 995407, "nilaxch1@gmail.com", "Potato123", "male", 21)
 
 

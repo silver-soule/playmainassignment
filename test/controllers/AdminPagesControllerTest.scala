@@ -21,12 +21,12 @@ import scala.concurrent.Future
 class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPerSuite {
 
   val config: Configuration = Configuration(ConfigFactory.load("application.conf"))
-  val mockmessageapi: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
+  val messagesApi: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
 
   val mockUserRepository: UserRepository = mock[UserRepository]
   val mockAssignmentRepository: AssignmentRepository = mock[AssignmentRepository]
   val mockaddAssignmentForm: AddAssignmentForm = mock[AddAssignmentForm]
-  val adminPagesController = new AdminPagesController(mockmessageapi, mockUserRepository, mockaddAssignmentForm, mockAssignmentRepository)
+  val adminPagesController = new AdminPagesController(messagesApi, mockUserRepository, mockaddAssignmentForm, mockAssignmentRepository)
   implicit lazy val materializer: Materializer = app.materializer
   "displayUsers" should {
     "redirect if user is not logged in" in {

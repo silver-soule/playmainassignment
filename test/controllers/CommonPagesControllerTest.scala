@@ -22,13 +22,13 @@ import scala.concurrent.Future
   */
 class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPerSuite {
   val config: Configuration = Configuration(ConfigFactory.load("application.conf"))
-  val defaultMessages: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
+  val messagesApi: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
   val mockUserProfileForm: UserProfileForm = mock[UserProfileForm]
   val mockUserRepository: UserRepository = mock[UserRepository]
   val mockHobbyRepository: HobbyRepository = mock[HobbyRepository]
   val mockHobbyToUserRepository: HobbyToUserRepository = mock[HobbyToUserRepository]
   val mockAssignmentRepository: AssignmentRepository = mock[AssignmentRepository]
-  val commonPagesController = new CommonPagesController(defaultMessages, mockUserRepository, mockHobbyToUserRepository,
+  val commonPagesController = new CommonPagesController(messagesApi, mockUserRepository, mockHobbyToUserRepository,
     mockHobbyRepository, mockUserProfileForm, mockAssignmentRepository)
   implicit lazy val materializer: Materializer = app.materializer
 

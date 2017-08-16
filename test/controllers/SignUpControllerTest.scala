@@ -23,11 +23,11 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
 
   implicit lazy val materializer: Materializer = app.materializer
   val config: Configuration = Configuration(ConfigFactory.load("application.conf"))
-  val defaultMessages: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
+  val messagesApi: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
   val mockSignUpForm = mock[SignUpForm]
   val mockUserRepository = mock[UserRepository]
   private val mockHasher = mock[Hasher]
-  val controller = new SignUpController(defaultMessages, mockUserRepository, mockSignUpForm, mockHasher)
+  val controller = new SignUpController(messagesApi, mockUserRepository, mockSignUpForm, mockHasher)
   val userDetails = SignUpDetails("Neelaksh", None, "Chauhan", 995407, "nilaxch@gmail.com", "Potato123", "Potato123", "male", 21)
   val user = User("Neelaksh", None, "Chauhan", 995407, "nilaxch1@gmail.com", "Potato123", "male", 21)
 
@@ -77,7 +77,6 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
     }
   }
 
-  "signUp" should {
     "render signup page" in {
       val form = new SignUpForm().signUpForm
       Logger.error(s"$form")
@@ -86,5 +85,4 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
       val result = controller.signUp().apply(request)
       status(result) mustEqual 200
     }
-  }
 }

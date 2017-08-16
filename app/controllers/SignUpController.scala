@@ -16,7 +16,7 @@ import scala.concurrent.Future
 class SignUpController @Inject()(val messagesApi: MessagesApi, userRepository: UserRepository,
                                  signUpForm: SignUpForm, hasher: Hasher) extends Controller with I18nSupport {
 
-  implicit val x = messagesApi
+  implicit val messages = messagesApi
 
   def signUpPost(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     signUpForm.signUpForm.bindFromRequest.fold(

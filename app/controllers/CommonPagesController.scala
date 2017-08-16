@@ -20,13 +20,12 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
                                      )
   extends Controller with I18nSupport {
 
-  implicit val x = messagesApi
+  implicit val messages = messagesApi
 
   def home(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     Logger.info(s"user logged in ${request.session.get("emailid")} ")
     request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
       emailId =>
-        //fix this
         val userData = userRepository.getUserData(emailId)
         val hobbies = hobbyToUserRepository.getHobbies(emailId)
         val allHobbies = hobbyRepository.getAllHobbies()
