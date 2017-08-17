@@ -22,12 +22,12 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
 
   val config: Configuration = Configuration(ConfigFactory.load("application.conf"))
   val messagesApi: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
-
   val mockUserRepository: UserRepository = mock[UserRepository]
   val mockAssignmentRepository: AssignmentRepository = mock[AssignmentRepository]
   val mockaddAssignmentForm: AddAssignmentForm = mock[AddAssignmentForm]
   val adminPagesController = new AdminPagesController(messagesApi, mockUserRepository, mockaddAssignmentForm, mockAssignmentRepository)
   implicit lazy val materializer: Materializer = app.materializer
+
   "displayUsers" should {
     "redirect if user is not logged in" in {
       val request = FakeRequest(GET, "/users")
@@ -45,7 +45,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
       val request = FakeRequest(GET, "/users").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
       val user = User("Neelaksh", None, "Chauhan", 995407, "nilaxch1@gmail.com", "Potato123", "male", 21)
       when(mockUserRepository.getAllNormalUsers()) thenReturn Future(List(user))
-      val result = call(adminPagesController.displayUsers(), request)
+      val result = adminPagesController.displayUsers().apply(request)
       status(result) mustEqual 200
     }
   }
@@ -56,27 +56,27 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
 
     "redirect if user is not logged in" in {
       val request = FakeRequest(POST, "/users")
-      val result = call(adminPagesController.flipPermissions(user.emailId, user.isEnabled), request)
+      val result = adminPagesController.flipPermissions(user.emailId, user.isEnabled).apply(request)
       redirectLocation(result) mustBe Some("/")
     }
 
     "redirect if user is not admin" in {
       val request = FakeRequest(POST, "/users").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "false")
-      val result = call(adminPagesController.flipPermissions(user.emailId, user.isEnabled), request)
+      val result = adminPagesController.flipPermissions(user.emailId, user.isEnabled).apply(request)
       redirectLocation(result) mustBe Some("/home")
     }
 
     "flip user permissions" in {
       val request = FakeRequest(POST, "/users").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
       when(mockUserRepository.setPermissions(user2.emailId, !user2.isEnabled)) thenReturn Future.successful(true)
-      val result = call(adminPagesController.flipPermissions(user2.emailId, user2.isEnabled), request)
+      val result = adminPagesController.flipPermissions(user2.emailId, user2.isEnabled).apply(request)
       redirectLocation(result) mustBe Some("/users")
     }
 
     "throw internal server error" in {
       val request = FakeRequest(POST, "/users").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
       when(mockUserRepository.setPermissions(user2.emailId, !user2.isEnabled)) thenReturn Future.successful(false)
-      val result = call(adminPagesController.flipPermissions(user2.emailId, user2.isEnabled), request)
+      val result = adminPagesController.flipPermissions(user2.emailId, user2.isEnabled).apply(request)
       status(result) mustEqual 500
     }
   }
@@ -113,7 +113,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
       when(mockAssignmentRepository.addAssignment(Assignment("scala01","big assignment"))) thenReturn Future.successful(true)
       val request = FakeRequest(POST, "/addassignment").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
         .withFormUrlEncodedBody("title" -> "scala01", "description" -> "big assignment")
-      val result = call(adminPagesController.addAssignmentPost(), request)
+      val result = adminPagesController.addAssignmentPost().apply(request)
       redirectLocation(result) mustBe  Some("/addassignment")
     }
 
@@ -123,7 +123,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
       when(mockAssignmentRepository.addAssignment(Assignment("scala01","big assignment"))) thenReturn Future.successful(false)
       val request = FakeRequest(POST, "/addassignment").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
         .withFormUrlEncodedBody("title" -> "scala01", "description" -> "big assignment")
-      val result = call(adminPagesController.addAssignmentPost(), request)
+      val result = adminPagesController.addAssignmentPost().apply(request)
       status(result) mustBe  500
     }
 
@@ -133,7 +133,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
         when(mockAssignmentRepository.addAssignment(Assignment("scala01","big assignment"))) thenReturn Future.successful(false)
         val request = FakeRequest(POST, "/addassignment").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "false")
           .withFormUrlEncodedBody("title" -> "scala01", "description" -> "big assignment")
-        val result = call(adminPagesController.addAssignmentPost(), request)
+        val result = adminPagesController.addAssignmentPost().apply(request)
         redirectLocation(result) mustBe  Some("/home")
     }
 
@@ -143,9 +143,8 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
       when(mockAssignmentRepository.addAssignment(Assignment("scala01","big assignment"))) thenReturn Future.successful(false)
       val request = FakeRequest(POST, "/addassignment")
         .withFormUrlEncodedBody("title" -> "scala01", "description" -> "big assignment")
-      val result = call(adminPagesController.addAssignmentPost(), request)
+      val result = adminPagesController.addAssignmentPost().apply(request)
       redirectLocation(result) mustBe  Some("/")
     }
   }
 }
-

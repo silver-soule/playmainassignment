@@ -24,8 +24,8 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
   implicit lazy val materializer: Materializer = app.materializer
   val config: Configuration = Configuration(ConfigFactory.load("application.conf"))
   val messagesApi: DefaultMessagesApi = new DefaultMessagesApi(Environment.simple(), config, new DefaultLangs(config))
-  val mockSignUpForm = mock[SignUpForm]
-  val mockUserRepository = mock[UserRepository]
+  private val mockSignUpForm = mock[SignUpForm]
+  private val mockUserRepository = mock[UserRepository]
   private val mockHasher = mock[Hasher]
   val controller = new SignUpController(messagesApi, mockUserRepository, mockSignUpForm, mockHasher)
   val userDetails = SignUpDetails("Neelaksh", None, "Chauhan", 995407, "nilaxch@gmail.com", "Potato123", "Potato123", "male", 21)
@@ -40,7 +40,7 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
       when(mockUserRepository.checkIfExists("nilaxch1@gmail.com")).thenReturn(Future.successful(false))
       when(mockUserRepository.store(user)).thenReturn(Future.successful(true))
       when(mockHasher.hashpw(user.password)) thenReturn user.password
-      val result = call(controller.signUpPost(), FakeRequest(POST, "/signup").withFormUrlEncodedBody(
+      val result = controller.signUpPost().apply(FakeRequest(POST, "/signup").withFormUrlEncodedBody(
         "firstName" -> "Neelaksh", "middleName" -> "", "lastName" -> "Chauhan", "mobileNumber" -> "995407",
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123", "verifyPassword" -> "Potato123",
         "gender" -> "male", "age" -> "21"
@@ -53,7 +53,7 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
       when(mockSignUpForm.signUpForm).thenReturn(form)
       when(mockUserRepository.checkIfExists("nilaxch1@gmail.com")).thenReturn(Future.successful(true))
       when(mockHasher.hashpw(user.password)) thenReturn user.password
-      val result = call(controller.signUpPost(), FakeRequest(POST, "/signup").withFormUrlEncodedBody(
+      val result = controller.signUpPost().apply(FakeRequest(POST, "/signup").withFormUrlEncodedBody(
         "firstName" -> "Neelaksh", "middleName" -> "", "lastName" -> "Chauhan", "mobileNumber" -> "995407",
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123", "verifyPassword" -> "Potato123",
         "gender" -> "male", "age" -> "21"
@@ -68,7 +68,7 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
       when(mockUserRepository.checkIfExists("nilaxch1@gmail.com")).thenReturn(Future.successful(false))
       when(mockUserRepository.store(user)).thenReturn(Future.successful(false))
       when(mockHasher.hashpw(user.password)) thenReturn user.password
-      val result = call(controller.signUpPost(), FakeRequest(POST, "/signup").withFormUrlEncodedBody(
+      val result = controller.signUpPost().apply(FakeRequest(POST, "/signup").withFormUrlEncodedBody(
         "firstName" -> "Neelaksh", "middleName" -> "", "lastName" -> "Chauhan", "mobileNumber" -> "995407",
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123", "verifyPassword" -> "Potato123",
         "gender" -> "male", "age" -> "21"

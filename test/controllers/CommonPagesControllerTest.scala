@@ -47,7 +47,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
       when(mockHobbyRepository.getAllHobbies()).thenReturn(Future.successful(List(Hobby(1, "dance"), Hobby(2, "hockey"))))
       when(mockHobbyToUserRepository.getHobbies(actualUser.emailId)).thenReturn(Future.successful(List(1)))
 
-      val result = call(commonPagesController.home(), request)
+      val result = commonPagesController.home().apply(request)
       status(result) mustBe 200
     }
 
@@ -57,7 +57,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         val user = UserProfileDetails("Neelaksh", None, "Chauhan", 995407, "male", 21, List(1))
         val form = new UserProfileForm().userProfileForm.fill(user)
         val request = FakeRequest(GET, "/home")
-        val result = call(commonPagesController.home(), request)
+        val result = commonPagesController.home().apply(request)
         redirectLocation(result) mustBe Some("/")
     }
 
@@ -71,7 +71,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
       when(mockHobbyRepository.getAllHobbies()).thenReturn(Future.successful(List(Hobby(1, "dance"), Hobby(2, "hockey"))))
       when(mockHobbyToUserRepository.getHobbies(actualUser.emailId)).thenReturn(Future.successful(List(1)))
       val request = FakeRequest(GET, "/home").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "false")
-      val result = call(commonPagesController.home(), request)
+      val result = commonPagesController.home().apply(request)
       redirectLocation(result) mustBe Some("/signup")
     }
 
@@ -89,7 +89,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         "firstName" -> "abc", "middleName" -> "", "lastName" -> "Potato", "mobileNumber" -> "995407",
         "gender" -> "male", "age" -> "21","hobbies"->""
       )
-      val result = call(commonPagesController.userInfoUpdatePost(), request)
+      val result = commonPagesController.userInfoUpdatePost().apply(request)
       status(result) mustBe 200
     }
 
@@ -107,7 +107,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
           "firstName" -> "abc", "middleName" -> "", "lastName" -> "Potato", "mobileNumber" -> "995407",
           "gender" -> "male", "age" -> "21","hobbies"->""
         )
-      val result = call(commonPagesController.userInfoUpdatePost(), request)
+      val result = commonPagesController.userInfoUpdatePost().apply(request)
       status(result) mustBe 500
     }
 
@@ -125,7 +125,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
           "firstName" -> "", "middleName" -> "", "lastName" -> "Potato", "mobileNumber" -> " 995407",
           "gender" -> "male", "age" -> "21","hobbies"->""
         )
-      val result = call(commonPagesController.userInfoUpdatePost(), request)
+      val result = commonPagesController.userInfoUpdatePost().apply(request)
       status(result) mustBe 400
     }
 
@@ -138,14 +138,14 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         val assignmentName = "scala01"
         val request = FakeRequest(POST, "/assignments").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
         when(mockAssignmentRepository.deleteAssignment(1)) thenReturn Future.successful(true)
-        val result = call(commonPagesController.deleteAssignment(1), request)
+        val result = commonPagesController.deleteAssignment(1).apply(request)
         redirectLocation(result) mustBe Some("/assignments")
       }
       "redirect invalid session" in {
         val assignmentName = "scala01"
         val request = FakeRequest(POST, "/assignments")
         when(mockAssignmentRepository.deleteAssignment(1)) thenReturn Future.successful(true)
-        val result = call(commonPagesController.deleteAssignment(1), request)
+        val result = commonPagesController.deleteAssignment(1).apply(request)
         redirectLocation(result) mustBe Some("/")
       }
 
@@ -153,14 +153,14 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         val assignmentName = "scala01"
         val request = FakeRequest(POST, "/assignments").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "false")
         when(mockAssignmentRepository.deleteAssignment(1)) thenReturn Future.successful(true)
-        val result = call(commonPagesController.deleteAssignment(1), request)
+        val result = commonPagesController.deleteAssignment(1).apply(request)
         redirectLocation(result) mustBe Some("/home")
       }
       "give internal server error" in {
         val assignmentName = "scala01"
         val request = FakeRequest(POST, "/assignments").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
         when(mockAssignmentRepository.deleteAssignment(1)) thenReturn Future.successful(false)
-        val result = call(commonPagesController.deleteAssignment(1), request)
+        val result = commonPagesController.deleteAssignment(1).apply(request)
         status(result) mustBe 500
       }
     }
@@ -172,7 +172,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         val request = FakeRequest(GET, "/assignments").withSession("emailid" -> "nilaxch1@gmail.com", "isadmin" -> "true")
         when(mockAssignmentRepository.getAllAssignments()) thenReturn Future.successful(List(Assignment("scala101", "basic assignment")))
         //val result = controller.displayAssignments().apply(FakeRequest(GET, "/signup"))
-        val result = call(commonPagesController.displayAssignments(), request)
+        val result = commonPagesController.displayAssignments().apply(request)
         Logger.info(s"RESULT IS $result")
         status(result) mustBe 200
       }
@@ -182,7 +182,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         val request = FakeRequest(GET, "/assignments")
         when(mockAssignmentRepository.getAllAssignments()) thenReturn Future.successful(List(Assignment("scala101", "basic assignment")))
         //val result = controller.displayAssignments().apply(FakeRequest(GET, "/signup"))
-        val result = call(commonPagesController.displayAssignments(), request)
+        val result = commonPagesController.displayAssignments().apply(request)
         Logger.info(s"RESULT IS $result")
         redirectLocation(result) mustBe Some("/")
       }
