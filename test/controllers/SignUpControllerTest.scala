@@ -39,7 +39,7 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
       when(mockSignUpForm.signUpForm).thenReturn(form)
       when(mockUserRepository.checkIfExists("nilaxch1@gmail.com")).thenReturn(Future.successful(false))
       when(mockUserRepository.store(user)).thenReturn(Future.successful(true))
-      when(mockHasher.hashpw(user.password)) thenReturn user.password
+      when(mockHasher.hashPassword(user.password)) thenReturn user.password
       val result = controller.signUpPost().apply(FakeRequest(POST, "/signup").withFormUrlEncodedBody(
         "firstName" -> "Neelaksh", "middleName" -> "", "lastName" -> "Chauhan", "mobileNumber" -> "995407",
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123", "verifyPassword" -> "Potato123",
@@ -52,7 +52,7 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
       val form = new SignUpForm().signUpForm.fill(userDetails)
       when(mockSignUpForm.signUpForm).thenReturn(form)
       when(mockUserRepository.checkIfExists("nilaxch1@gmail.com")).thenReturn(Future.successful(true))
-      when(mockHasher.hashpw(user.password)) thenReturn user.password
+      when(mockHasher.hashPassword(user.password)) thenReturn user.password
       val result = controller.signUpPost().apply(FakeRequest(POST, "/signup").withFormUrlEncodedBody(
         "firstName" -> "Neelaksh", "middleName" -> "", "lastName" -> "Chauhan", "mobileNumber" -> "995407",
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123", "verifyPassword" -> "Potato123",
@@ -67,7 +67,7 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPe
       when(mockSignUpForm.signUpForm).thenReturn(form)
       when(mockUserRepository.checkIfExists("nilaxch1@gmail.com")).thenReturn(Future.successful(false))
       when(mockUserRepository.store(user)).thenReturn(Future.successful(false))
-      when(mockHasher.hashpw(user.password)) thenReturn user.password
+      when(mockHasher.hashPassword(user.password)) thenReturn user.password
       val result = controller.signUpPost().apply(FakeRequest(POST, "/signup").withFormUrlEncodedBody(
         "firstName" -> "Neelaksh", "middleName" -> "", "lastName" -> "Chauhan", "mobileNumber" -> "995407",
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123", "verifyPassword" -> "Potato123",

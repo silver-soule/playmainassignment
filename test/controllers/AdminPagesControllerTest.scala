@@ -32,7 +32,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
     "redirect if user is not logged in" in {
       val request = FakeRequest(GET, "/users")
       val result = adminPagesController.displayUsers().apply(request)
-      redirectLocation(result) mustBe Some("/")
+      redirectLocation(result) mustBe Some("/login")
     }
 
     "redirect if user is not admin" in {
@@ -57,7 +57,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
     "redirect if user is not logged in" in {
       val request = FakeRequest(POST, "/users")
       val result = adminPagesController.flipPermissions(user.emailId, user.isEnabled).apply(request)
-      redirectLocation(result) mustBe Some("/")
+      redirectLocation(result) mustBe Some("/login")
     }
 
     "redirect if user is not admin" in {
@@ -102,7 +102,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
       val request = FakeRequest(GET, "/addassignment")
       when(mockaddAssignmentForm.addAssignmentForm).thenReturn(form)
       val result = adminPagesController.addAssignment().apply(request)
-      redirectLocation(result) mustBe Some("/")
+      redirectLocation(result) mustBe Some("/login")
     }
   }
 
@@ -144,7 +144,7 @@ class AdminPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOneA
       val request = FakeRequest(POST, "/addassignment")
         .withFormUrlEncodedBody("title" -> "scala01", "description" -> "big assignment")
       val result = adminPagesController.addAssignmentPost().apply(request)
-      redirectLocation(result) mustBe  Some("/")
+      redirectLocation(result) mustBe  Some("/login")
     }
   }
 }

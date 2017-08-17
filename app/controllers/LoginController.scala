@@ -6,7 +6,6 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Controller, Request}
 import util.Hasher
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -29,8 +28,8 @@ class LoginController @Inject()(userRepository: UserRepository, loginForm: Login
       userData => {
         val userInfo = userRepository.getUserData(userData.emailId)
         userInfo.map {
-          case Some(user: User) =>
-            if (hasher.checkpw(userData.password, user.password)) {
+          case Some(user) =>
+            if (hasher.checkPassword(userData.password, user.password)) {
               if (user.isEnabled) {
                 Logger.info(s"Logged in ${userData.emailId}")
                 Redirect(routes.CommonPagesController.home()).flashing("success" -> "logged in").withSession("name" -> user.firstName,
@@ -56,6 +55,7 @@ class LoginController @Inject()(userRepository: UserRepository, loginForm: Login
   }
 
   def login(): Action[AnyContent] = Action { implicit request =>
+    Logger.info(s"OK----------------->\n ${loginForm.loginForm}")
     Ok(views.html.login(loginForm.loginForm))
   }
 
@@ -66,13 +66,12 @@ class LoginController @Inject()(userRepository: UserRepository, loginForm: Login
   def updatePasswordPost(): Action[AnyContent] = Action.async { implicit request =>
     updatePasswordForm.updatePasswordForm.bindFromRequest.fold(
       formWithErrors => {
-        Logger.info("BAD REQUEST FOR UPDATE PASSWORD")
-        Logger.error(s"invalid input! $formWithErrors")
+        Logger.error(s"updatePasswordPost invalid input! $formWithErrors")
         Future.successful(BadRequest(views.html.updatepassword(formWithErrors)))
       }, {
         passwordUpdateInfo =>
-          Logger.info(s"${passwordUpdateInfo}")
-          val updated = userRepository.updatePassword(passwordUpdateInfo.emailId, hasher.hashpw(passwordUpdateInfo.password))
+          Logger.info(s"$passwordUpdateInfo")
+          val updated = userRepository.updatePassword(passwordUpdateInfo.emailId, hasher.hashPassword(passwordUpdateInfo.password))
           updated.map {
             case false =>
               Redirect(routes.LoginController.login())
@@ -81,7 +80,6 @@ class LoginController @Inject()(userRepository: UserRepository, loginForm: Login
               Redirect(routes.LoginController.login())
                 .flashing("success" -> "successfully changed password")
           }
-
       })
   }
 }

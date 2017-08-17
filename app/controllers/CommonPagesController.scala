@@ -5,10 +5,8 @@ import models._
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 
 /**
   * Created by Neelaksh on 12/8/17.
@@ -30,19 +28,18 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
         val hobbies = hobbyToUserRepository.getHobbies(emailId)
         val allHobbies = hobbyRepository.getAllHobbies()
         userData.flatMap {
-          case userdataopt@Some(_) =>
-            Logger.info(userdataopt.toString)
-            val userdata = userdataopt.get
+          case Some(userData) =>
+            Logger.info(userData.toString)
             hobbies.flatMap {
               hobbies =>
                 Logger.info(s"$hobbies")
                 allHobbies.map {
                   allHobbies =>
-                    Logger.info(s"hobbies for $userdataopt ARE $hobbies out of $allHobbies")
-                    Ok(views.html.userprofile(userProfileForm.userProfileForm.fill(UserProfileDetails(
-                      userdata.firstName, userdata.middleName, userdata.lastName, userdata.mobileNumber,
-                      userdata.gender, userdata.age, hobbies)
-                    ), allHobbies))
+                    val filledForm = userProfileForm.userProfileForm.fill(UserProfileDetails(
+                      userData.firstName, userData.middleName, userData.lastName, userData.mobileNumber,
+                      userData.gender, userData.age, hobbies))
+                    Logger.info(s"-----------$filledForm")
+                    Ok(views.html.userprofile(filledForm, allHobbies))
                 }
             }
           case None =>
@@ -78,10 +75,11 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
                   allHobbies =>
                     updateHobbies.map {
                       case true =>
-                        Ok(views.html.userprofile(userProfileForm.userProfileForm.fill(UserProfileDetails(
+                        val userForm = userProfileForm.userProfileForm.fill(UserProfileDetails(
                           userData.firstName, userData.middleName, userData.lastName, userData.mobileNumber,
                           userData.gender, userData.age, userData.hobbies
-                        )), allHobbies))
+                        ))
+                        Ok(views.html.userprofile(userForm, allHobbies))
                       case false =>
                         InternalServerError("500")
                     }

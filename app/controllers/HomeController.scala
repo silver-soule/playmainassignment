@@ -19,9 +19,7 @@ class HomeController extends Controller {
     Redirect(routes.LoginController.login())
   }
 
-
   def logout(): Action[AnyContent] = Action { implicit request =>
     Redirect(routes.LoginController.login()).withNewSession
   }
-
 }

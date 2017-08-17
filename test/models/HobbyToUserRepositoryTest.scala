@@ -11,6 +11,7 @@ class HobbyToUserRepositoryTest extends PlaySpec {
   val user = User("Neelakshadaddaa", None, "Chauhan", 995407, "nilaxch1@gmail.com", "Potato123", "male", 21)
   val hobbyToUser = List(HobbyToEmail(1, user.emailId))
   "HobbyToUserRepository" should {
+
     "update hobbies" in {
       val storeResult = userRepo.result(userRepo.repository.update(hobbyToUser, user.emailId))
       storeResult mustEqual true
@@ -22,5 +23,4 @@ class HobbyToUserRepositoryTest extends PlaySpec {
     }
 
   }
-
 }

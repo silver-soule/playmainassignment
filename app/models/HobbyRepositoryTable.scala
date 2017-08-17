@@ -4,13 +4,11 @@ import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.lifted.ProvenShape
-
 import scala.concurrent.Future
 
 /**
   * Created by Neelaksh on 12/8/17.
   */
-
 
 class HobbyRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends HobbyRepositoryTable {
 

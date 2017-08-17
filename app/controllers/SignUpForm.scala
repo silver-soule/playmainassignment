@@ -28,9 +28,7 @@ class SignUpForm {
   )(SignUpDetails.apply)(SignUpDetails.unapply)
     .verifying("Passwords do not match", data =>{
       data.password == data.verifyPassword
-    }
-
-    ))
+    }))
 
   def validPassword: Constraint[String] = {
     val validPassword = """^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$""".r

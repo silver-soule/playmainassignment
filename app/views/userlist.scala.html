@@ -25,7 +25,6 @@
     <tr>
         <td>@user.firstName</td>
         <td>@user.emailId</td>
-        @if(session("isadmin") == "true"){
         <td>
             <form>
                 @if(user.isEnabled == true){
@@ -34,7 +33,6 @@
                 <button name="userenable"  class = "btn-success" >ENABLE</button>
                 }
             </form></td>
-        }
         }
     </tr>
     }

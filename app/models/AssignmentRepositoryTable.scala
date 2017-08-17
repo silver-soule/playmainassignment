@@ -4,14 +4,12 @@ import com.google.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.lifted.ProvenShape
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 /**
   * Created by Neelaksh on 13/8/17.
   */
-
 
 class AssignmentRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends AssignmentRepositoryTable {
 
@@ -29,7 +27,6 @@ class AssignmentRepository @Inject()(protected val dbConfigProvider: DatabaseCon
     db.run(assignmentQuery.filter(_.id === assignmentId).delete) map (_ > 0)
   }
 }
-
 
 trait AssignmentRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 

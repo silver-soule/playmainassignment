@@ -13,16 +13,17 @@ import scala.concurrent.Future
   * Created by Neelaksh on 15/8/17.
   */
 class AdminPagesController @Inject()(val messagesApi: MessagesApi, userRepository: UserRepository
-                                     , addAssignmentForm: AddAssignmentForm, assignmentRepository: AssignmentRepository) extends Controller with I18nSupport {
+                                     , addAssignmentForm: AddAssignmentForm,
+                                     assignmentRepository: AssignmentRepository) extends Controller with I18nSupport {
 
 
   implicit val messages = messagesApi
 
   def displayUsers(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
+    request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->"not logged in"))) {
       emailId =>
         request.session("isadmin") match {
-          case "false" => Future.successful(Redirect(routes.CommonPagesController.home()))
+          case "false" => Future.successful(Redirect(routes.CommonPagesController.home()).flashing("error"->"No administrator permissions"))
           case "true" =>
             val allUsers = userRepository.getAllNormalUsers()
             allUsers.map {
@@ -35,10 +36,10 @@ class AdminPagesController @Inject()(val messagesApi: MessagesApi, userRepositor
   }
 
   def flipPermissions(emailId: String, isEnabled: Boolean): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
+    request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->" not logged in"))) {
       _ =>
         request.session("isadmin") match {
-          case "false" => Future.successful(Redirect(routes.CommonPagesController.home()))
+          case "false" => Future.successful(Redirect(routes.CommonPagesController.home()).flashing("error"->"No administrator permissions"))
           case "true" =>
             Logger.info(s"--------${emailId.trim}-----------${!isEnabled}-------")
             val flipUser = userRepository.setPermissions(emailId.trim(), !isEnabled)
@@ -55,21 +56,21 @@ class AdminPagesController @Inject()(val messagesApi: MessagesApi, userRepositor
   }
 
   def addAssignment(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    request.session.get("emailid").fold(Redirect(routes.HomeController.index())) {
+    request.session.get("emailid").fold(Redirect(routes.LoginController.login()).flashing("error"->"not logged in")) {
       _ =>
         Logger.info("checking if admin")
         request.session("isadmin") match {
-          case "false" => Redirect(routes.CommonPagesController.home())
+          case "false" => Redirect(routes.CommonPagesController.home()).flashing("error"->"No administrator permissions")
           case "true" => Ok(views.html.addassignment(addAssignmentForm.addAssignmentForm))
         }
     }
   }
 
   def addAssignmentPost(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
+    request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->"not logged in"))) {
       _ =>
         request.session("isadmin") match {
-          case "false" => Future.successful(Redirect(routes.CommonPagesController.home()))
+          case "false" => Future.successful(Redirect(routes.CommonPagesController.home()).flashing("error"->"No administrator permissions"))
           case "true" =>
             addAssignmentForm.addAssignmentForm.bindFromRequest.fold(
               formWithErrors => {

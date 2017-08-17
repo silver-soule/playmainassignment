@@ -40,7 +40,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPer
       val form = new LoginForm().loginForm.fill(LoginDetails(user.emailId, user.password))
       when(mockloginForm.loginForm).thenReturn(form)
       when(mockUserRepository.getUserData(user.emailId)) thenReturn Future(Some(user))
-      when(mockHasher.checkpw(user.password, user.password)) thenReturn true
+      when(mockHasher.checkPassword(user.password, user.password)) thenReturn true
       val result = controller.loginPost().apply(FakeRequest(POST, "/login").withFormUrlEncodedBody(
         "emailId" -> user.emailId, "password" -> user.password
       ))
@@ -54,8 +54,8 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPer
       val form = new LoginForm().loginForm.fill(LoginDetails(user2.emailId, user2.password))
       when(mockloginForm.loginForm).thenReturn(form)
       when(mockUserRepository.getUserData(user2.emailId)) thenReturn Future(Some(user2))
-      when(mockHasher.checkpw(user2.password, user2.password)) thenReturn true
-      val result = controller.loginPost.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody(
+      when(mockHasher.checkPassword(user2.password, user2.password)) thenReturn true
+      val result = controller.loginPost().apply(FakeRequest(POST, "/login").withFormUrlEncodedBody(
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123"
       ))
       redirectLocation(result) mustBe Some("/login")
@@ -85,7 +85,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPer
       val form = new LoginForm().loginForm.fill(LoginDetails(user.emailId, user.password))
       when(mockloginForm.loginForm).thenReturn(form)
       when(mockUserRepository.getUserData(user.emailId)) thenReturn Future.successful(Some(user))
-      when(mockHasher.checkpw(user.password, user.password)) thenReturn false
+      when(mockHasher.checkPassword(user.password, user.password)) thenReturn false
       val result = controller.loginPost().apply(FakeRequest(POST, "/login").withFormUrlEncodedBody(
         "emailId" -> "nilaxch1@gmail.com", "password" -> "Potato123"
       ))
@@ -113,7 +113,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPer
     "update password successfuly" in {
       val form = new UpdatePasswordForm().updatePasswordForm.fill(UpdatePasswordDetails(user.emailId,user.password,user.password))
       when(mockUpdatePasswordForm.updatePasswordForm) thenReturn form
-      when(mockHasher.hashpw(user.password)) thenReturn user.password
+      when(mockHasher.hashPassword(user.password)) thenReturn user.password
       when(mockUserRepository.updatePassword(user.emailId,user.password)) thenReturn Future.successful(true)
       val request = FakeRequest(POST, "/updatepassword").withFormUrlEncodedBody(
         "emailId" -> user.emailId, "password" -> user.password,"verifyPassword" -> user.password
@@ -125,7 +125,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneAppPer
     "tell can't update password as user doesnt exist" in {
       val form = new UpdatePasswordForm().updatePasswordForm.fill(UpdatePasswordDetails(user.emailId,user.password,user.password))
       when(mockUpdatePasswordForm.updatePasswordForm) thenReturn form
-      when(mockHasher.hashpw(user.password)) thenReturn user.password
+      when(mockHasher.hashPassword(user.password)) thenReturn user.password
       when(mockUserRepository.updatePassword(user.emailId,user.password)) thenReturn Future.successful(false)
       val request = FakeRequest(POST, "/updatepassword").withFormUrlEncodedBody(
         "emailId" -> user.emailId, "password" -> user.password,"verifyPassword" -> user.password

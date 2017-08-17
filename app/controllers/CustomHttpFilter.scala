@@ -8,7 +8,6 @@ import akka.stream.Materializer
 import com.google.inject.Inject
 import play.api.http.DefaultHttpFilters
 import play.api.mvc._
-
 import scala.concurrent.{ExecutionContext, Future}
 
 /**

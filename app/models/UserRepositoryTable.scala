@@ -4,10 +4,8 @@ import com.google.inject.{Inject, Singleton}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.lifted.ProvenShape
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 
 /**
   * Created by Neelaksh on 10/8/17.
@@ -63,7 +61,7 @@ trait UserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class UserTable(tag: Tag) extends Table[User](tag, "userinfo") {
 
-    def id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    def id: Rep[Int] = column[Int]("id", O.AutoInc)
 
     def firstName: Rep[String] = column[String]("firstname")
 
@@ -73,7 +71,7 @@ trait UserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
     def mobileNumber: Rep[Long] = column[Long]("mobilenumber")
 
-    def emailId: Rep[String] = column[String]("emailid")
+    def emailId: Rep[String] = column[String]("emailid",O.PrimaryKey)
 
     def password: Rep[String] = column[String]("password")
 

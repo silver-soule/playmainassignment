@@ -14,9 +14,9 @@ import play.api.mvc.{Flash, Session}
 
 class UserProfileTest extends PlaySpec with MockitoSugar {
 
-  val mockMessage = mock[Messages]
-  val mockSession = mock[Session]
-  val mockFlash = mock[Flash]
+  private val mockMessage = mock[Messages]
+  private val mockSession = mock[Session]
+  private val mockFlash = mock[Flash]
   val userProfileForm = new UserProfileForm
   "UserProfile" should {
     "render userprofile for" in {

@@ -25,5 +25,3 @@ class AssignmentRepositoryTest extends PlaySpec {
     }
   }
 }
-
-

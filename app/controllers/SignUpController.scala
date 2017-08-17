@@ -6,7 +6,6 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import util.Hasher
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -36,7 +35,7 @@ class SignUpController @Inject()(val messagesApi: MessagesApi, userRepository: U
           case false =>
             val addedUser = userRepository.store(User(userData.firstName, userData.middleName,
               userData.lastName, userData.mobileNumber, userData.emailId,
-              hasher.hashpw(userData.password), userData.gender, userData.age))
+              hasher.hashPassword(userData.password), userData.gender, userData.age))
             addedUser.map {
               case true => Redirect(routes.CommonPagesController.home()).flashing("success" -> "New account created")
                 .withSession("emailid" -> userData.emailId, "name" -> userData.firstName, "isadmin" -> false.toString)
