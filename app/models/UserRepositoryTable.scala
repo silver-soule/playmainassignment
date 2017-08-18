@@ -30,10 +30,7 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   }
 
   def getUserData(email: String): Future[Option[User]] = {
-    db.run(userQuery.filter(user => user.emailId === email)
-      .result.headOption.map {
-      useropt => useropt
-    })
+    db.run(userQuery.filter(user => user.emailId === email).result.headOption)
   }
 
   def updateUserData(user: UserWithoutPassword): Future[Boolean] = {

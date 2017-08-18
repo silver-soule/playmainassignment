@@ -22,17 +22,17 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
 
   def home(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     Logger.info(s"user logged in ${request.session.get("emailid")} ")
-    request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
+    request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->"not logged in"))) {
       emailId =>
         val userData = userRepository.getUserData(emailId)
-        val hobbies = hobbyToUserRepository.getHobbies(emailId)
-        val allHobbies = hobbyRepository.getAllHobbies()
         userData.flatMap {
           case Some(userData) =>
             Logger.info(userData.toString)
+            val hobbies = hobbyToUserRepository.getHobbies(emailId)
             hobbies.flatMap {
               hobbies =>
                 Logger.info(s"$hobbies")
+                val allHobbies = hobbyRepository.getAllHobbies()
                 allHobbies.map {
                   allHobbies =>
                     val filledForm = userProfileForm.userProfileForm.fill(UserProfileDetails(
@@ -50,7 +50,7 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
 
 
   def userInfoUpdatePost(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
+    request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->"not logged in"))) {
       emailId =>
         Logger.info(request.body.asFormUrlEncoded.toString)
         val allHobbies = hobbyRepository.getAllHobbies()
@@ -68,11 +68,11 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
               userData.firstName, userData.middleName, userData.lastName, userData.mobileNumber, emailId,
               userData.gender, userData.age
             ))
-            val updateHobbies = hobbyToUserRepository.update(userData.hobbies.map(hobby => HobbyToEmail(hobby, emailId)), emailId)
             updateUserData.flatMap {
               case true =>
                 allHobbies.flatMap {
                   allHobbies =>
+                    val updateHobbies = hobbyToUserRepository.update(userData.hobbies.map(hobby => HobbyToEmail(hobby, emailId)), emailId)
                     updateHobbies.map {
                       case true =>
                         val userForm = userProfileForm.userProfileForm.fill(UserProfileDetails(
@@ -92,7 +92,7 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
   }
 
   def displayAssignments(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
+    request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->"not logged in"))) {
       Logger.info(s"get and display assignments")
       _ =>
         val assignments = assignmentRepository.getAllAssignments()
@@ -105,9 +105,8 @@ class CommonPagesController @Inject()(val messagesApi: MessagesApi, userReposito
   }
 
   def deleteAssignment(assignmentId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    request.session.get("emailid").fold(Future.successful(Redirect(routes.HomeController.index()))) {
+    request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->"not logged in"))) {
       _ =>
-        Logger.info("aackjajkcajinvalid")
         request.session("isadmin") match {
           case "false" =>
             Future.successful(Redirect(routes.CommonPagesController.home()))

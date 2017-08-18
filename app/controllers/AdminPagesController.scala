@@ -21,7 +21,7 @@ class AdminPagesController @Inject()(val messagesApi: MessagesApi, userRepositor
 
   def displayUsers(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     request.session.get("emailid").fold(Future.successful(Redirect(routes.LoginController.login()).flashing("error"->"not logged in"))) {
-      emailId =>
+      _ =>
         request.session("isadmin") match {
           case "false" => Future.successful(Redirect(routes.CommonPagesController.home()).flashing("error"->"No administrator permissions"))
           case "true" =>

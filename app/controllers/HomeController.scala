@@ -22,4 +22,8 @@ class HomeController extends Controller {
   def logout(): Action[AnyContent] = Action { implicit request =>
     Redirect(routes.LoginController.login()).withNewSession
   }
+
+  def redirectToLoginWithFlash : Action[AnyContent] = Action{ implicit request =>
+    Redirect(routes.LoginController.login()).flashing("error"->"Please login to access this page")
+  }
 }
