@@ -1,7 +1,6 @@
 package views
 
-
-import controllers.{AddAssignmentForm, SignUpForm}
+import controllers.SignUpForm
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -19,7 +18,7 @@ class SignUpTest extends PlaySpec with MockitoSugar {
       val mockFlash = mock[Flash]
       val signUpForm = new SignUpForm
       when(mockFlash.get("error")) thenReturn None
-      val html = views.html.signup.render(signUpForm.signUpForm, mockMessage,mockFlash)
+      val html = views.html.signup.render(signUpForm.signUpForm, mockMessage, mockFlash)
       assert(html.toString.contains("signup"))
     }
   }

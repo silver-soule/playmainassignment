@@ -53,7 +53,6 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 trait UserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   import driver.api._
-
   val userQuery: TableQuery[UserTable] = TableQuery[UserTable]
 
   class UserTable(tag: Tag) extends Table[User](tag, "userinfo") {

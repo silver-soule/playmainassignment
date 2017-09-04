@@ -1,4 +1,3 @@
-import com.typesafe.config.ConfigFactory
 
 name := """playmainassignment"""
 organization := "com.example"

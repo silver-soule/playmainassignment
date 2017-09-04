@@ -3,8 +3,6 @@ package views
 /**
   * Created by Neelaksh on 15/8/17.
   */
-
-
 import controllers.UserProfileForm
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar

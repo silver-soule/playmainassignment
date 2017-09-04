@@ -13,7 +13,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.{Configuration, Environment, Logger}
 import util.Hasher
-
 import scala.concurrent.Future
 
 /**

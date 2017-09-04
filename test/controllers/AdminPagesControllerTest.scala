@@ -11,7 +11,6 @@ import play.api.{Configuration, Environment}
 import play.api.i18n.{DefaultLangs, DefaultMessagesApi, MessagesApi}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

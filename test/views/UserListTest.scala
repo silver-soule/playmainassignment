@@ -3,7 +3,7 @@ package views
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import play.api.i18n.Messages
-import play.api.mvc.{Flash, Session}
+import play.api.mvc.Session
 
 /**
   * Created by Neelaksh on 15/8/17.
@@ -18,5 +18,4 @@ class UserListTest extends PlaySpec with MockitoSugar {
       assert(html.toString.contains("Permissions"))
     }
   }
-
 }

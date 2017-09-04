@@ -14,7 +14,6 @@ import play.api.i18n.{DefaultLangs, DefaultMessagesApi}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.{Configuration, Environment, Logger}
-
 import scala.concurrent.Future
 
 /**
@@ -58,7 +57,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         val form = new UserProfileForm().userProfileForm.fill(user)
         val request = FakeRequest(GET, "/home")
         val result = commonPagesController.home().apply(request)
-        redirectLocation(result) mustBe Some("/")
+        redirectLocation(result) mustBe Some("/login")
     }
 
     "redirect to signup if account was deleted" in {
@@ -146,7 +145,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         val request = FakeRequest(POST, "/assignments")
         when(mockAssignmentRepository.deleteAssignment(1)) thenReturn Future.successful(true)
         val result = commonPagesController.deleteAssignment(1).apply(request)
-        redirectLocation(result) mustBe Some("/")
+        redirectLocation(result) mustBe Some("/login")
       }
 
       "redirect normal user" in {
@@ -184,7 +183,7 @@ class CommonPagesControllerTest extends PlaySpec with MockitoSugar with GuiceOne
         //val result = controller.displayAssignments().apply(FakeRequest(GET, "/signup"))
         val result = commonPagesController.displayAssignments().apply(request)
         Logger.info(s"RESULT IS $result")
-        redirectLocation(result) mustBe Some("/")
+        redirectLocation(result) mustBe Some("/login")
       }
     }
   }
